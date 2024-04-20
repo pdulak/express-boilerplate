@@ -95,11 +95,15 @@ router.post('/register', async (req, res) => {
 
         logger.info(`User registered successfully. email: ${email}; name: ${name}`);
 
-        return res.status(201).json({ message: 'User registered successfully' });
+        res.redirect('/thank-you');
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Internal server error' });
     }
+});
+
+router.get('/thank-you', (req, res) => {
+    res.render('thank-you');
 });
 
 module.exports = router;
