@@ -6,6 +6,10 @@ const authMiddleware = require('./middlewares/authMiddleware');
 const morgan = require('morgan');
 const rfs = require('rotating-file-stream');
 const path = require('path');
+require('dotenv').config();
+
+// Set the port from the environment variables or use a default value
+const port = process.env.PORT || 3000;
 
 const app = express();
 
@@ -47,6 +51,6 @@ app.use((req, res, next) => {
 });
 
 // Start the server
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
+app.listen(port, () => {
+    console.log(`Server started on port ${port}`);
 });
