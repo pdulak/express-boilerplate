@@ -3,6 +3,7 @@ const router = express.Router();
 const { User } = require('../models'); // Import the User model
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
+const logger = require('../tools/logger');
 
 router.get('/', (req, res) => {
     res.render('index');
@@ -58,6 +59,8 @@ router.post('/register', async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
+        logger.info(`User registration attempt. email: ${email}; name: ${name}`);
+
         // Validation: Check if required fields are provided
         if (!name || !email || !password) {
             return res.render('registration', { name, email, error: 'All fields are required' });
@@ -89,6 +92,8 @@ router.post('/register', async (req, res) => {
             uuid: uuidv4(), 
             is_active: true // Set user as active
         });
+
+        logger.info(`User registered successfully. email: ${email}; name: ${name}`);
 
         return res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {

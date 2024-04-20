@@ -2,14 +2,18 @@ const express = require('express');
 const session = require('express-session');
 const publicPages = require('./routes/publicPages');
 const profilePages = require('./routes/profilePages');
-const sequelize = require('sequelize');
-const logger = require('./tools/logger');
+const authMiddleware = require('./middlewares/authMiddleware');
 const morgan = require('morgan');
+const rfs = require('rotating-file-stream');
+const path = require('path');
 
 const app = express();
 
-// Use the morgan middleware with the custom logger
-app.use(morgan('combined', { stream: logger.stream.write }));
+// create a rotating write stream
+var accessLogStream = rfs.createStream('morgan-access.log', {
+    interval: '1d', // rotate daily
+    path: path.join(__dirname, 'logs')
+})
 
 // handle sessions
 app.use(express.json());
@@ -23,8 +27,11 @@ app.use(express.static('assets'));
 app.set('view engine', 'pug');
 
 // Set the isAuthenticated variable
-const authMiddleware = require('./middlewares/authMiddleware');
 app.use(authMiddleware.globalAuthVariables);
+
+// setup the logger
+app.use(morgan('combined')); // console
+app.use(morgan('combined', { stream: accessLogStream })); // file
 
 // Routes
 app.use('/', publicPages);
