@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title Boilerplate Page
+    link(rel="stylesheet" href="/css/pico.css")
+  body
+    main(class="container")
+      header 
+        hgroup 
+          h1 Bolierplate 
+        nav 
+          ul 
+            li 
+              a(href="/") Home
+            if isAuthenticated
+              li
+                a(href="/profile") Profile  
+              li 
+                a(href="/logout") Logout  
+            else
+              li 
+                a(href="/register") Register
+              li 
+                a(href="/login") Login
+      block content
