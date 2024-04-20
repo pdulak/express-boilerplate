@@ -1,11 +1,8 @@
 {
   "name": "express-site-boilerplate",
   "module": "index.js",
-  "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
+  "scripts": {
+    "start": "node index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
