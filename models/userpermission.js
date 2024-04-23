@@ -5,13 +5,8 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class UserPermission extends Model {
     static associate(models) {
-      UserPermission.hasOne(models.User, {
-        foreignKey: 'userId'
-      });
-      
-      UserPermission.hasOne(models.Permission, {
-        foreignKey: 'permissionId'
-      })
+      UserPermission.belongsTo(models.User);
+      UserPermission.belongsTo(models.Permission);
     }
   }
   UserPermission.init({

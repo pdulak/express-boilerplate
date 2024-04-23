@@ -92,4 +92,20 @@ npx sequelize-cli db:migrate
 npx sequelize-cli model:generate --name Permission --attributes name:string
 npx sequelize-cli model:generate --name UserPermission --attributes userId:integer,permissionId:integer
 ```
+1. Adjust migration files to add `references` section
+```js
+    userId: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: 'User',
+            key: 'id'
+        }
+      },
+```
 1. Adjust models in the `static(associate)` section
+```js
+// in child table
+UserPermission.belongsTo(models.User);
+// in parent table
+User.hasMany(models.UserPermission)
+```

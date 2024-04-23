@@ -90,10 +90,12 @@ router.post('/register', async (req, res) => {
             email,
             password: hashedPassword,
             uuid: uuidv4(), 
-            is_active: true // Set user as active
+            is_active: false 
         });
 
         logger.info(`User registered successfully. email: ${email}; name: ${name}`);
+
+        // TODO: send activation email!!!
 
         res.redirect('/thank-you');
     } catch (error) {
