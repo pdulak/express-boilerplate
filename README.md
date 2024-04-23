@@ -12,7 +12,6 @@ To run:
 node index.js
 ```
 
-
 ---
 
 ## Sequelize
@@ -84,3 +83,13 @@ Run the migration to rename the active column:
 npx sequelize-cli db:migrate
 ```
 
+---
+
+## Relations in sequelize
+
+1. create tables as usual:
+```shell
+npx sequelize-cli model:generate --name Permission --attributes name:string
+npx sequelize-cli model:generate --name UserPermission --attributes userId:integer,permissionId:integer
+```
+1. Adjust models in the `static(associate)` section
