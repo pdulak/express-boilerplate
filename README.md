@@ -109,3 +109,9 @@ UserPermission.belongsTo(models.User);
 // in parent table
 User.hasMany(models.UserPermission)
 ```
+
+## seed in sequelize
+
+1. create seed file `npx sequelize-cli seed:generate --name demo-data`
+1. fill the seed file with data - remember about `createdAt` and `updatedAt` fields because they cause validation errors if not filled
+1. execute seed `npx sequelize-cli db:seed:all --debug`
