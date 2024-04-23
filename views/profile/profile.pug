@@ -4,3 +4,11 @@ block content
   h1 User Profile
   p Welcome, #{user.name}!
   p Email: #{user.email}
+  hr
+  if permissions
+    p You have the following permissions:
+    ul
+      each permission in permissions
+        li= permission.Permission.name
+  else
+    p You have no permissions. 
