@@ -1,0 +1,18 @@
+extends ../layout
+
+block content 
+  table 
+    thead 
+      tr 
+        th Name 
+        th Email 
+        th Permissions 
+    tbody 
+      each user in users 
+        tr 
+          td= user.name 
+          td= user.email
+          td 
+            ul 
+              each permission in user.UserPermissions 
+                li= permission.Permission.name

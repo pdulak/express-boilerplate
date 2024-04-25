@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const publicPages = require('./routes/publicPages');
 const profilePages = require('./routes/profilePages');
+const adminPages = require('./routes/adminPages');
 const authMiddleware = require('./middlewares/authMiddleware');
 const morgan = require('morgan');
 const rfs = require('rotating-file-stream');
@@ -40,6 +41,7 @@ app.use(morgan('combined', { stream: accessLogStream })); // file
 // Routes
 app.use('/', publicPages);
 app.use('/profile', profilePages);
+app.use('/admin', adminPages);
 
 // Error handling
 app.use((req, res, next) => {

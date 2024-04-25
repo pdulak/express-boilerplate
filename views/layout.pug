@@ -18,6 +18,9 @@ html
                 a(href="/profile") Profile  
               li 
                 a(href="/logout") Logout  
+              if isAdmin
+                li 
+                  a(href="/admin") Admin
             else
               li 
                 a(href="/register") Register
