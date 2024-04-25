@@ -1,6 +1,9 @@
 extends ../layout
 
 block content 
+  h2 User Edit Page
+  if error
+    p.error= error
   form(method="post") 
     input(type="hidden" name="_method" value="PUT")
     input(type="hidden" name="id" value=user.id)
