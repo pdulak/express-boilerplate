@@ -1,15 +1,24 @@
 # express-site-boilerplate
 
-To install dependencies:
+1. Install dependencies:
 
 ```bash
 npm install
 ```
 
-To run:
+2. initialize database:
+
+```bash
+npx sequelize-cli db:migrate
+npx sequelize-cli db:seed:all --debug
+```
+
+3. run:
 
 ```bash
 node index.js
+# or
+npm start
 ```
 
 ---
