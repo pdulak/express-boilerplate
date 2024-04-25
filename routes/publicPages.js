@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User } = require('../models'); // Import the User model
+const { User, UserPermission } = require('../models'); // Import the User model
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const logger = require('../tools/logger');
@@ -28,8 +28,11 @@ router.post('/login', async (req, res) => {
         if (!passwordMatch) {
             return res.render('login', { error: 'Invalid email or password' });
         }
+        
+        const user_permissions = await UserPermission.findAll({ where: { userId: user.id }, include: 'Permission' });
 
         req.session.user = user; // Store user in session
+        req.session.user_permissions = user_permissions.map(perm => perm.Permission.code); // Store user permissions in session
         res.redirect('/profile');
     } catch (error) {
         console.error(error);

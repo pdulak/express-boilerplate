@@ -8,6 +8,7 @@ function ensureAuthenticated(req, res, next) {
 
 function globalAuthVariables(req, res, next) {
     res.locals.isAuthenticated = req.session.user ? true : false;
+    res.locals.isAdmin = req.session.user_permissions ? req.session.user_permissions.includes('is_admin') : false;
     next();
 }
 
