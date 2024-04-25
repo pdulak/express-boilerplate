@@ -1,3 +1,21 @@
+body {
+    min-height: 100vh;
+}
+
+header div {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+
+header nav a.active {
+    color: green;
+}
+
+main.container {
+    min-height: calc(100vh - 200px);
+}
+
 .error {
     border: 2px solid #ff7f7f;
     background-color: rgba(255, 0, 0, 0.3);

@@ -5,25 +5,31 @@ html
     link(rel="stylesheet" href="/css/pico.css")
     link(rel="stylesheet" href="/css/style.css")
   body
-    main(class="container")
-      header 
-        hgroup 
-          h1 Bolierplate 
+    header
+      div(class="container")
+        h3 Boilerplate Page 
         nav 
           ul 
             li 
-              a(href="/") Home
+              a(href="/" class="the-home") Home
             if isAuthenticated
               li
                 a(href="/profile") Profile  
-              li 
-                a(href="/logout") Logout  
               if isAdmin
                 li 
                   a(href="/admin") Admin
+              li 
+                a(href="/logout" ) Logout  
             else
               li 
                 a(href="/register") Register
               li 
                 a(href="/login") Login
+    main(class="container")
       block content
+
+    footer
+      div(class="container")
+        p &copy; 2024 Boilerplate Page
+
+  script(src="/js/main.js")
