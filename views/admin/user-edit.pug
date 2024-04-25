@@ -4,8 +4,7 @@ block content
   h2 User Edit Page
   if error
     p.error= error
-  form(method="post") 
-    input(type="hidden" name="_method" value="PUT")
+  form(method="post")
     input(type="hidden" name="id" value=user.id)
     label(for="name") Name:
     input(type="text" name="name" id="name" value=user.name)

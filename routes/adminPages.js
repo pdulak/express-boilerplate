@@ -69,14 +69,17 @@ router.post('/users/edit/:id', isAdmin, (req, res) => {
                         if (Array.isArray(req.body.permissions)) {
                             UserPermission.bulkCreate(req.body.permissions.map(permissionId => ({ userId: user.id, permissionId }))).then(() => {
                                 res.redirect('/admin/users');
+                                return;
                             });
                         } else {
                             UserPermission.create({ userId: user.id, permissionId: req.body.permissions }).then(() => {
                                 res.redirect('/admin/users');
+                                return;
                             });
                         }
                     } else {
                         res.redirect('/admin/users');
+                        return;
                     }
                 });
             });
