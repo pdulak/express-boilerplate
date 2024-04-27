@@ -17,12 +17,12 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 // create a rotating write stream
-var accessLogStream = rfs.createStream('morgan-access.log', {
+const accessLogStream = rfs.createStream('morgan-access.log', {
     interval: '1d', // rotate daily
     path: path.join(__dirname, 'logs')
 })
 
-// handle sessions using database
+// handle sessions using database 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
