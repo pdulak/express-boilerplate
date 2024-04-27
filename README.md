@@ -7,7 +7,7 @@
 npm install
 ```
 
-2. set environmental variables - copy .env-sample to .env and set variables in it. See SDev SMTP server notes below if you want to send emails locally.
+2. set environmental variables - copy .env-sample to .env and set variables in it. See Dev SMTP server notes below if you want to send emails locally.
 
 3. copy and adjust config - in the `/config/` directory copy `config-sample.json` to `config.json` and adjust database configuration if needed. By default SQLite is in use. 
 
