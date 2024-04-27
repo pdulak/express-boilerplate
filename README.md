@@ -11,14 +11,24 @@ npm install
 ```bash
 npx sequelize-cli db:migrate
 npx sequelize-cli db:seed:all --debug
+# OR
+npm run initdb
 ```
 
 3. run:
 
 ```bash
 node index.js
-# or
+# OR
 npm start
+```
+
+---
+
+### Dev SMTP server
+
+```bash
+docker run -p 1080:1080 -p 1025:1025 maildev/maildev
 ```
 
 ---

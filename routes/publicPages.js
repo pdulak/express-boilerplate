@@ -4,6 +4,7 @@ const { User, UserPermission, Permission } = require('../models'); // Import the
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const logger = require('../tools/logger');
+const { sendMail } = require('../tools/mailHelper');
 
 router.get('/', (req, res) => {
     res.render('index');
@@ -105,10 +106,12 @@ router.post('/register', async (req, res) => {
             const permission = await Permission.findOne({ where: { code: 'is_admin' } });
             await UserPermission.create({ userId: user.id, permissionId: permission.id });
             await User.update({ is_active: true }, { where: { id: user.id } });
+            res.redirect('/admin');
         } else {
-
-            // TODO: send activation email!!!
-
+            const reset_hash = uuidv4();
+            await User.update({ reset_hash }, { where: { email } });
+            const activationLink = `${process.env.BASE_URL}/activate/${reset_hash}`;
+            sendMail(email, 'Activate your account', `Click here to activate your account: ${activationLink}`);
         }
 
         res.redirect('/thank-you');
@@ -121,5 +124,23 @@ router.post('/register', async (req, res) => {
 router.get('/thank-you', (req, res) => {
     res.render('thank-you');
 });
+
+router.get('/activate/:hash', async (req, res) => {
+    User.findOne({ where: { reset_hash: req.params.hash } })
+        .then(async user => {
+            if (!user) {
+                return res.status(404).json({ message: 'Invalid activation link' });
+            }
+
+            await User.update({ is_active: true, reset_hash: null }, { where: { id: user.id } });
+            res.render('activation-OK'); 
+            return;
+        })
+        .catch(error => {
+            console.error(error);
+            return res.status(500).json({ message: 'Internal server error' });
+        });
+})
+        
 
 module.exports = router;
