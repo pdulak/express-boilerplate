@@ -3,12 +3,13 @@ extends ../layout
 block content 
   h2 User Management Page
 
-  table 
+  table(class="sortable")
     thead 
       tr 
         th Name 
         th Email 
         th Active?
+        th Created At
         th Permissions 
         th Action
     tbody 
@@ -17,6 +18,7 @@ block content
           td= user.name 
           td= user.email
           td= user.is_active ? '✓' : '✗'
+          td #{user.createdAt.toLocaleString()}
           td 
             ul 
               each permission in user.UserPermissions 
@@ -28,3 +30,5 @@ block content
     function editUser(id) {
       window.location.href = '/admin/users/edit/' + id;
     }
+
+  script(src="/js/sortable/sortable.min.js")
