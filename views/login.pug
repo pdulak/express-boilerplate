@@ -11,5 +11,10 @@ block content
     input(type="password" name="password" id="password")
     input(type="submit" value="Login")
 
+  p Don't have an account? 
+    a(href="/register") Register here.
+  p Forgot your password? 
+    a(href="/forgot-password") Reset it here.
+
   script.
     document.getElementById('email').focus();

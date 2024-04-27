@@ -52,7 +52,74 @@ router.get('/logout', (req, res) => {
 });
 
 router.get('/forgot-password', (req, res) => {
-    res.send('Forgot password page');
+    res.render('forgot-password');
+});
+
+router.post('/forgot-password', async (req, res) => {
+    const { email } = req.body;
+
+    // Validation: check if email is provided
+    if (!email) {
+        return res.render('forgot-password', { error: 'Email is required' });
+    }
+
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+        // do nothing
+    } else {
+        const reset_hash = uuidv4();
+        await User.update({ reset_hash }, { where: { email } });
+        const resetLink = `${process.env.BASE_URL}/reset-password/${reset_hash}`;
+        sendMail(email, 'Reset your password', `Click here to reset your password: ${resetLink}`);
+    }
+
+    res.render('forgot-sent');
+});
+
+router.get('/reset-password/:hash', async (req, res) => {
+    User.findOne({ where: { reset_hash: req.params.hash } })
+        .then(async user => {
+            if (!user) {
+                return res.status(404).json({ message: 'Invalid reset link' });
+            }
+
+            res.render('reset-password');
+            return;
+        })
+        .catch(error => {
+            console.error(error);
+            return res.status(500).json({ message: 'Internal server error' });
+        });
+});
+
+router.post('/reset-password/:hash', async (req, res) => {
+    const { password, password2 } = req.body;
+
+    // Validation: Check if password is at least 8 characters long
+    if (password.length < 8) {
+        return res.render('reset-password', { error: 'Password should be at least 8 characters long' });
+    }
+
+    // Validation: Check if passwords match
+    if (password !== password2) {
+        return res.render('reset-password', { error: 'Passwords do not match' });
+    }
+
+    User.findOne({ where: { reset_hash: req.params.hash } })
+        .then(async user => {
+            if (!user) {
+                return res.status(404).json({ message: 'Invalid reset link' });
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+            await User.update({ password: hashedPassword, reset_hash: null, is_active: true }, { where: { id: user.id } });
+            res.render('reset-OK');
+            return;
+        })
+        .catch(error => {
+            console.error(error);
+            return res.status(500).json({ message: 'Internal server error' });
+        });
 });
 
 router.get('/register', (req, res) => {
@@ -141,6 +208,5 @@ router.get('/activate/:hash', async (req, res) => {
             return res.status(500).json({ message: 'Internal server error' });
         });
 })
-        
 
 module.exports = router;
