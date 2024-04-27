@@ -1,7 +1,8 @@
 # express-site-boilerplate
 
-1. Install dependencies:
+### Instalation and configuration
 
+1. Install dependencies: 
 ```bash
 npm install
 ```
@@ -15,7 +16,9 @@ npx sequelize-cli db:seed:all --debug
 npm run initdb
 ```
 
-3. run:
+3. set environmental variables - copy .env-sample to .env and set variables in it. See SDev SMTP server notes below if you want to send emails locally.
+
+4. run:
 
 ```bash
 node index.js
@@ -27,21 +30,37 @@ npm start
 
 ### Dev SMTP server
 
+For development purposes you can use maildev to send and review emails locally. 
+
 ```bash
 docker run -p 1080:1080 -p 1025:1025 maildev/maildev
 ```
 
+Documentation: https://github.com/maildev/maildev
+
 ---
 
-## Sequelize
+### Sequelize-related notes
+
+---
+#### Initialize Sequelize in new project
+
+This step is not required in this repo.
 
 ```shell
 npx sequelize-cli init
+```
+
+---
+#### Create new DB table
+
+```shell
 npx sequelize-cli model:generate --name User --attributes uuid:string,name:string,email:string,password:string,active:boolean
 npx sequelize-cli db:migrate
 ```
 
-### To add a new column named is_admin and rename the active column to is_active
+---
+#### Add a new column named is_admin 
 
 Create a new migration file using sequelize-cli to add the is_admin column:
 
@@ -74,6 +93,9 @@ Run the migration using sequelize-cli to apply the changes to the database:
 npx sequelize-cli db:migrate
 ```
 
+---
+#### Rename the active column to is_active
+
 Create a new migration file using sequelize-cli to rename the active column to is_active:
 
 ```shell
@@ -103,15 +125,14 @@ npx sequelize-cli db:migrate
 ```
 
 ---
-
-## Relations in sequelize
+#### Relations in sequelize
 
 1. create tables as usual:
 ```shell
 npx sequelize-cli model:generate --name Permission --attributes name:string
 npx sequelize-cli model:generate --name UserPermission --attributes userId:integer,permissionId:integer
 ```
-1. Adjust migration files to add `references` section
+2. Adjust migration files to add `references` section
 ```js
     userId: {
         type: Sequelize.INTEGER,
@@ -121,7 +142,7 @@ npx sequelize-cli model:generate --name UserPermission --attributes userId:integ
         }
       },
 ```
-1. Adjust models in the `static(associate)` section
+3. Adjust models in the `static(associate)` section
 ```js
 // in child table
 UserPermission.belongsTo(models.User);
@@ -129,8 +150,9 @@ UserPermission.belongsTo(models.User);
 User.hasMany(models.UserPermission)
 ```
 
-## seed in sequelize
+---
+#### Seed table - fill with initial data
 
 1. create seed file `npx sequelize-cli seed:generate --name demo-data`
-1. fill the seed file with data - remember about `createdAt` and `updatedAt` fields because they cause validation errors if not filled
-1. execute seed `npx sequelize-cli db:seed:all --debug`
+2. fill the seed file with data - remember about `createdAt` and `updatedAt` fields because they cause validation errors if not filled
+3. execute seed `npx sequelize-cli db:seed:all --debug`
