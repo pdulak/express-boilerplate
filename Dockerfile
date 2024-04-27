@@ -17,4 +17,4 @@ COPY . .
 EXPOSE $PORT
 
 # Command to run the application
-CMD ["node", "index.js"]
+CMD ["node", "app.js"]
