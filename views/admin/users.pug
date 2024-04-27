@@ -8,6 +8,7 @@ block content
       tr 
         th Name 
         th Email 
+        th Active?
         th Permissions 
         th Action
     tbody 
@@ -15,6 +16,7 @@ block content
         tr 
           td= user.name 
           td= user.email
+          td= user.is_active ? '✓' : '✗'
           td 
             ul 
               each permission in user.UserPermissions 
