@@ -7,7 +7,11 @@
 npm install
 ```
 
-2. initialize database:
+2. set environmental variables - copy .env-sample to .env and set variables in it. See SDev SMTP server notes below if you want to send emails locally.
+
+3. copy and adjust config - in the `/config/` directory copy `config-sample.json` to `config.json` and adjust database configuration if needed. By default SQLite is in use. 
+
+4. initialize database:
 
 ```bash
 npx sequelize-cli db:migrate
@@ -16,9 +20,7 @@ npx sequelize-cli db:seed:all --debug
 npm run initdb
 ```
 
-3. set environmental variables - copy .env-sample to .env and set variables in it. See SDev SMTP server notes below if you want to send emails locally.
-
-4. run:
+5. run:
 
 ```bash
 node index.js

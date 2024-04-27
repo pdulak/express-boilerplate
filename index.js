@@ -23,7 +23,7 @@ var accessLogStream = rfs.createStream('morgan-access.log', {
 // handle sessions
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(session({ secret: 'asdfkljasdofuisdafhj-348r9', resave: false, saveUninitialized: false }));
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
 
 // Serve static files from the assets directory
 app.use(express.static('assets'));
