@@ -1,4 +1,5 @@
 const express = require('express');
+const Sequelize = require("sequelize");
 const session = require('express-session');
 const publicPages = require('./routes/publicPages');
 const profilePages = require('./routes/profilePages');
@@ -7,6 +8,7 @@ const authMiddleware = require('./middlewares/authMiddleware');
 const morgan = require('morgan');
 const rfs = require('rotating-file-stream');
 const path = require('path');
+
 require('dotenv').config();
 
 // Set the port from the environment variables or use a default value
@@ -20,10 +22,15 @@ var accessLogStream = rfs.createStream('morgan-access.log', {
     path: path.join(__dirname, 'logs')
 })
 
-// handle sessions
+// handle sessions using database
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const sequelize = new Sequelize({ dialect: 'sqlite', storage: path.join(__dirname, 'database', 'session.sqlite') })
+const sessionStore = new SequelizeStore({ db: sequelize });
+app.use( session({ secret: process.env.SESSION_SECRET, store: sessionStore, resave: false, saveUninitialized: false, proxy: true }));
+// initialize database if needed
+sessionStore.sync();
 
 // Serve static files from the assets directory
 app.use(express.static('assets'));
