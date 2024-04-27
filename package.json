@@ -1,8 +1,8 @@
 {
   "name": "express-site-boilerplate",
-  "module": "index.js",
+  "module": "app.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node app.js",
     "initdb": "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all --debug"
   },
   "dependencies": {

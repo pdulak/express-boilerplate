@@ -23,7 +23,7 @@ npm run initdb
 5. run:
 
 ```bash
-node index.js
+node app.js
 # OR
 npm start
 ```
