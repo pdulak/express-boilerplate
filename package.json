@@ -2,7 +2,8 @@
   "name": "express-site-boilerplate",
   "module": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "initdb": "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { User, UserPermission } = require('../models'); // Import the User model
+const { User, UserPermission, Permission } = require('../models'); // Import the User model
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const logger = require('../tools/logger');
@@ -66,7 +66,7 @@ router.post('/register', async (req, res) => {
 
         // Validation: Check if required fields are provided
         if (!name || !email || !password) {
-            return res.render('registration', { name, email, error: 'All fields are required' });
+            return res.render('registration', { name, email, error: 'Name, Email, and Password are required' });
         }
 
         // Validation: Check if email is in valid format
@@ -98,7 +98,18 @@ router.post('/register', async (req, res) => {
 
         logger.info(`User registered successfully. email: ${email}; name: ${name}`);
 
-        // TODO: send activation email!!!
+        // If this is the first user in the database, set permission to 'is_admin' and activate the user
+        const usersCount = await User.count();
+        if (usersCount === 1) {
+            const user = await User.findOne({ where: { email } });
+            const permission = await Permission.findOne({ where: { code: 'is_admin' } });
+            await UserPermission.create({ userId: user.id, permissionId: permission.id });
+            await User.update({ is_active: true }, { where: { id: user.id } });
+        } else {
+
+            // TODO: send activation email!!!
+
+        }
 
         res.redirect('/thank-you');
     } catch (error) {
