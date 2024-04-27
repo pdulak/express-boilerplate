@@ -29,6 +29,11 @@ router.post('/login', async (req, res) => {
         if (!passwordMatch) {
             return res.render('login', { error: 'Invalid email or password' });
         }
+
+        // check if user active, if not send to not-active page
+        if (!user.is_active) {
+            return res.render('not-active');
+        }
         
         const user_permissions = await UserPermission.findAll({ where: { userId: user.id }, include: 'Permission' });
 
